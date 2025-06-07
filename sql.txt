@@ -1,0 +1,15 @@
+1) Задание 1
+select "Couriers".login, COUNT(*) from "Orders", "Couriers" 
+where "Orders"."courierId" = "Couriers".id AND "Orders"."inDelivery" = true 
+GROUP BY "Couriers".login;
+
+2) Задание 2
+SELECT 
+    "Orders".id,
+    CASE 
+        WHEN finished = true THEN 2
+        WHEN cancelled = true THEN -1
+        WHEN "inDelivery" = true THEN 1
+        ELSE 0 
+    END AS status
+FROM "Orders";
