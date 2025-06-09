@@ -1,11 +1,36 @@
 1) Задание 1
+
+Новый запрос через явное соеденение, замененно COUNT(*) на COUNT("Orders"."id") этот запрос покажет всех курьеров, даже тех, у которых нет заказов в доставке:
+SELECT "Couriers".login, COUNT("Orders"."id") 
+FROM "Couriers" 
+LEFT JOIN "Orders" ON "Orders"."courierId" = "Couriers".id AND "Orders"."inDelivery" = true
+GROUP BY "Couriers".login;
+
+Старый запрос - он то же рабочий использует неявное соеденение.
 select "Couriers".login, COUNT(*) from "Orders", "Couriers" 
 where "Orders"."courierId" = "Couriers".id AND "Orders"."inDelivery" = true 
 GROUP BY "Couriers".login;
 
+scooter_rent=# SELECT "Couriers".login, COUNT("Orders"."id")
+scooter_rent-# FROM "Couriers"
+scooter_rent-# LEFT JOIN "Orders" ON "Orders"."courierId" = "Couriers".id AND "Orders"."inDelivery" = true
+scooter_rent-# GROUP BY "Couriers".login;
+ login | count
+-------+-------
+(0 rows)
+
+scooter_rent=# select "Couriers".login, COUNT(*) from "Orders", "Couriers"
+scooter_rent-# where "Orders"."courierId" = "Couriers".id AND "Orders"."inDelivery" = true
+scooter_rent-# GROUP BY "Couriers".login;
+ login | count
+-------+-------
+(0 rows)
+
+
+
 2) Задание 2
 SELECT 
-    "Orders".id,
+    "Orders".track,
     CASE 
         WHEN finished = true THEN 2
         WHEN cancelled = true THEN -1
